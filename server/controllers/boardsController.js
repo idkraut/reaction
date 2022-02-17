@@ -20,7 +20,8 @@ const getBoard = (req, res, next) => {
       path: "lists",
       populate: { path: "cards" },
     })
-    .then((board) => res.json(board));
+    .then((board) => res.json(board))
+    .catch((err) => next(new HttpError("Could not find board", 500)));
 };
 
 const createBoard = (req, res, next) => {
