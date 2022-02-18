@@ -4,6 +4,7 @@ export default function boards(state = [], action) {
       return action.boards;
     }
     case "FETCH_BOARD_SUCCESS": {
+      // eslint-disable-next-line no-unused-vars
       const {lists, ...boardWithoutLists} = action.board
       return [boardWithoutLists];
     }
