@@ -4,11 +4,8 @@ export default function boards(state = [], action) {
       return action.boards;
     }
     case "FETCH_BOARD_SUCCESS": {
-      // const {lists: _, }
-      // {
-      //   ...
-      // }
-      return [action.board];
+      const {lists, ...boardWithoutLists} = action.board
+      return [boardWithoutLists];
     }
     case "CREATE_BOARD_SUCCESS": {
       const newBoard = action.board;

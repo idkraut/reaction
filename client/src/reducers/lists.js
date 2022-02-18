@@ -1,7 +1,12 @@
 export default function lists(state = [], action) {
   switch (action.type) {
     case "FETCH_BOARD_SUCCESS": {
-      return action.board.lists;
+      const listsWithoutCards = action.board.lists.map(list => {
+        const {cards, ...listWithoutCards} = list
+        return listWithoutCards
+      })
+
+      return listsWithoutCards;
     }
     default:
       return state;
