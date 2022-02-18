@@ -1,6 +1,6 @@
 import React from "react";
 
-const List = () => {
+const Card = ({ description }) => {
   return (
     <div className="card-background">
       <div className="card ">
@@ -12,10 +12,7 @@ const List = () => {
           <div className="card-label orange colorblindable"></div>
           <div className="card-label blue colorblindable"></div>
           <div className="card-label purple colorblindable"></div>
-          <p>
-            Cards do many cool things. Click on this card to open it and learn
-            more...
-          </p>
+          <p>{description}</p>
         </div>
         <div className="card-icons">
           <i className="clock-icon sm-icon overdue-recent completed">Aug 4</i>
@@ -27,4 +24,4 @@ const List = () => {
   );
 };
 
-export default List;
+export default Card;

@@ -15,7 +15,6 @@ const Board = () => {
 
   const board = useSelector((store) => store.boards)[0];
   const lists = useSelector((store) => store.lists);
-  console.log("lists", lists);
 
   if (!board) {
     return null;
@@ -40,7 +39,7 @@ const Board = () => {
         <div id="list-container" className="list-container">
           <div id="existing-lists" className="existing-lists">
             {lists.map((list) => (
-              <List key={list._id}></List>
+              <List key={list._id} {...list}></List>
             ))}
             <div id="new-list" className="new-list">
               <span>Add a list...</span>

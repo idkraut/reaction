@@ -4,6 +4,10 @@ export default function boards(state = [], action) {
       return action.boards;
     }
     case "FETCH_BOARD_SUCCESS": {
+      // const {lists: _, }
+      // {
+      //   ...
+      // }
       return [action.board];
     }
     case "CREATE_BOARD_SUCCESS": {
