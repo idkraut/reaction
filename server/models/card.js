@@ -5,6 +5,9 @@ const CardSchema = new Schema({
   title: {
     type: String,
   },
+  description: {
+    type: String,
+  },
 });
 
 const Card = mongoose.model("Card", CardSchema);
