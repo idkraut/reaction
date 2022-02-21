@@ -7,7 +7,7 @@ const BoardSchema = new Schema({
     required: [true, "The Board title is required"],
   },
   lists: [{ type: Schema.Types.ObjectId, ref: "List" }],
-});
+}, {timestamps: true});
 
 const Board = mongoose.model("Board", BoardSchema);
 
