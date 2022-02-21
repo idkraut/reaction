@@ -1,4 +1,4 @@
-import { React, useEffect } from "react";
+import { React, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { fetchBoard } from "../../actions/BoardActions";
@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 const Board = () => {
   const dispatch = useDispatch();
   const { id: boardId } = useParams("id");
+  const [isNewListClicked, setisNewListClicked] = useState(false);
 
   useEffect(() => dispatch(fetchBoard(boardId)), [dispatch, boardId]);
 
@@ -19,6 +20,8 @@ const Board = () => {
   if (!board) {
     return null;
   }
+
+  const handleToggleListClick = () => setisNewListClicked(!isNewListClicked);
 
   return (
     <>
@@ -42,12 +45,21 @@ const Board = () => {
               <List key={list._id} {...list}></List>
             ))}
           </div>
-          <div id="new-list" className="new-list">
+          <div
+            id="new-list"
+            className={isNewListClicked ? "new-list selected" : "new-list"}
+            onClick={handleToggleListClick}
+          >
             <span>Add a list...</span>
             <input type="text" placeholder="Add a list..." />
             <div>
-              <input type="submit" className="button" value="Save" />
-              <i className="x-icon icon"></i>
+              <input
+                type="submit"
+                className="button"
+                value="Save"
+                onClick={handleToggleListClick}
+              />
+              <i className="x-icon icon" onClick={handleToggleListClick}></i>
             </div>
           </div>
         </div>
