@@ -45,9 +45,9 @@ const createList = (req, res, next) => {
 const updateList = (req, res, next) => {
   const listId = req.params.id;
   console.log(req.body);
-  List.findByIdAndUpdate(listId, req.body, () => {}).then((updatedList) =>
-    res.json(updatedList)
-  );
+  List.findByIdAndUpdate(listId, req.body, { new: true })
+    .then((updatedList) => (req.list = updatedList))
+    .then(() => next());
 };
 
 const addListToBoard = (req, res, next) => {
@@ -60,6 +60,7 @@ const addListToBoard = (req, res, next) => {
 };
 
 const sendList = (req, res, next) => {
+  console.log(req.list);
   const { cards, ...listWithoutCards } = req.list.toObject();
   res.json(listWithoutCards);
 };

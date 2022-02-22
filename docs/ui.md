@@ -1,11 +1,11 @@
 <!-- TOC -->
 
 - [1. UI](#1-ui)
-    - [1.1. Special Elements](#11-special-elements)
-        - [1.1.1. List titles](#111-list-titles)
-        - [1.1.2. Create a list form](#112-create-a-list-form)
-        - [1.1.3. New Card Form](#113-new-card-form)
-        - [1.1.4. Colorblind labels](#114-colorblind-labels)
+  - [1.1. Special Elements](#11-special-elements)
+    - [1.1.1. List titles](#111-list-titles)
+    - [1.1.2. Create a list form](#112-create-a-list-form)
+    - [1.1.3. New Card Form](#113-new-card-form)
+    - [1.1.4. Colorblind labels](#114-colorblind-labels)
 
 <!-- /TOC -->
 
