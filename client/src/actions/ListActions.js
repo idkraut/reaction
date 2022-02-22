@@ -8,7 +8,7 @@ export function createListSuccess(list) {
 export function createList(list, callback = () => {}) {
   return function (dispatch) {
     apiClient.createList(list, (data) => {
-      dispatch(createListSuccess(data.list));
+      dispatch(createListSuccess(data));
       callback(data.list);
     });
   };

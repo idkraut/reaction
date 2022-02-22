@@ -1,0 +1,6 @@
+PUT http://localhost:5000/api/lists/620fd901e9101cde9efae278
+content-type: application/json
+
+{
+  "title": "Updated title11"
+}
