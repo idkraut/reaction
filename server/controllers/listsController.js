@@ -44,7 +44,6 @@ const createList = (req, res, next) => {
 
 const updateList = (req, res, next) => {
   const listId = req.params.id;
-  console.log(req.body);
   List.findByIdAndUpdate(listId, req.body, { new: true })
     .then((updatedList) => (req.list = updatedList))
     .then(() => next());

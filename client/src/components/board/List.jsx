@@ -1,9 +1,29 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import Card from "./Card";
 
+import { editList } from "../../actions/ListActions";
+
 const List = ({ _id, title }) => {
+  const dispatch = useDispatch();
+
+  const [isEditTitle, setIsEditTitle] = useState(false);
+
+  const [listTitle, setListTitle] = useState(title);
+
+  const handleEditTitle = () => {
+    const listChanges = {
+      title: listTitle,
+    };
+
+    dispatch(
+      editList(_id, listChanges, () => {
+        setIsEditTitle(false);
+      })
+    );
+  };
+
   const cards = useSelector((state) => state.cards).filter(
     (card) => card.listId === _id
   );
@@ -14,7 +34,24 @@ const List = ({ _id, title }) => {
         <div className="list">
           <a className="more-icon sm-icon" href=""></a>
           <div>
-            <p className="list-title">{title}</p>
+            {isEditTitle ? (
+              <input
+                type="text"
+                value={listTitle}
+                onChange={(e) => setListTitle(e.target.value)}
+                onKeyUp={(e) => (e.key === "Enter" ? handleEditTitle() : null)}
+                onBlur={handleEditTitle}
+                className="list-title"
+                autoFocus
+              />
+            ) : (
+              <p
+                onClick={() => setIsEditTitle(!isEditTitle)}
+                className="list-title"
+              >
+                {listTitle}
+              </p>
+            )}
           </div>
           <div className="add-dropdown add-top">
             <div className="card"></div>
