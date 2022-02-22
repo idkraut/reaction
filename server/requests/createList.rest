@@ -3,7 +3,7 @@ content-type: application/json
 
 {
   "list": {
-    "boardId": "620e7c91c0d6301b20f76e87",
+    "boardId": "620e7c91c0d6301b20f76e89",
     "title": "testList"
   }
 }

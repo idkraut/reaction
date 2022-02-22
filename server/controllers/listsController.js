@@ -5,6 +5,18 @@ const Board = require("../models/board");
 const HttpError = require("../models/httpError");
 const { validationResult } = require("express-validator");
 
+const verifyBoardExists = async (req, res, next) => {
+  const boardId = req.body.list.boardId;
+  const board = await Board.findById(boardId);
+  console.log(board)
+  if (!board) {
+    res.status(404).send("Board could not be found")
+  } else {
+    next()
+  }
+
+};
+
 const createList = (req, res, next) => {
   const errors = validationResult(req);
   if (errors.isEmpty()) {
@@ -22,7 +34,6 @@ const createList = (req, res, next) => {
 };
 
 const addListToBoard = (req, res, next) => {
-  console.log("req:", req.list)
   const listId = req.list._id;
   const boardId = req.list.boardId;
 
@@ -35,4 +46,6 @@ const sendList = (req, res, next) => {
   res.json(listWithoutCards);
 }
 
-module.exports = { createList, addListToBoard, sendList };
+
+
+module.exports = { createList, addListToBoard, sendList, verifyBoardExists };

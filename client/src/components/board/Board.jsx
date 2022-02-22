@@ -2,6 +2,7 @@ import { React, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { fetchBoard } from "../../actions/BoardActions";
+import { createList } from "../../actions/ListActions";
 
 import List from "./List";
 
@@ -11,6 +12,7 @@ const Board = () => {
   const dispatch = useDispatch();
   const { id: boardId } = useParams("id");
   const [isNewListClicked, setisNewListClicked] = useState(false);
+  const [listTitle, setListTitle] = useState("");
 
   useEffect(() => dispatch(fetchBoard(boardId)), [dispatch, boardId]);
 
@@ -21,7 +23,18 @@ const Board = () => {
     return null;
   }
 
-  const handleToggleListClick = () => setisNewListClicked(!isNewListClicked);
+  const handleSubmitNewList = () => {
+    const newList = {
+      boardId: boardId,
+      title: listTitle,
+    };
+    dispatch(
+      createList(newList, () => {
+        setisNewListClicked(false);
+        setListTitle("");
+      })
+    );
+  };
 
   return (
     <>
@@ -48,18 +61,25 @@ const Board = () => {
           <div
             id="new-list"
             className={isNewListClicked ? "new-list selected" : "new-list"}
-            onClick={handleToggleListClick}
           >
-            <span>Add a list...</span>
-            <input type="text" placeholder="Add a list..." />
+            <span onClick={() => setisNewListClicked(true)}>Add a list...</span>
+            <input
+              type="text"
+              placeholder="Add a list..."
+              value={listTitle}
+              onChange={(e) => setListTitle(e.target.value)}
+            />
             <div>
               <input
                 type="submit"
                 className="button"
                 value="Save"
-                onClick={handleToggleListClick}
+                onClick={handleSubmitNewList}
               />
-              <i className="x-icon icon" onClick={handleToggleListClick}></i>
+              <i
+                className="x-icon icon"
+                onClick={() => setisNewListClicked(false)}
+              ></i>
             </div>
           </div>
         </div>
