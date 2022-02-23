@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Card from "./Card";
 
 import { editList } from "../../actions/ListActions";
+import { createCard } from "../../actions/CardsActions";
 
 const List = ({
   _id,
@@ -16,6 +17,7 @@ const List = ({
   const [isEditTitle, setIsEditTitle] = useState(false);
 
   const [listTitle, setListTitle] = useState(title);
+  const [cardTitle, setCardTitle] = useState("");
 
   const handleEditTitle = () => {
     const listChanges = {
@@ -25,6 +27,15 @@ const List = ({
     dispatch(
       editList(_id, listChanges, () => {
         setIsEditTitle(false);
+      })
+    );
+  };
+
+  const handleAddCard = () => {
+    dispatch(
+      createCard({ title: cardTitle, listId: _id }, () => {
+        setCardTitle("");
+        onChangeActiveAddCardForm("");
       })
     );
   };
@@ -86,10 +97,14 @@ const List = ({
           >
             <div className="card">
               <div className="card-info"></div>
-              <textarea name="add-card"></textarea>
+              <textarea
+                value={cardTitle}
+                onChange={(e) => setCardTitle(e.target.value)}
+                name="add-card"
+              ></textarea>
               <div className="members"></div>
             </div>
-            <a onClick={() => onChangeActiveAddCardForm("")} className="button">
+            <a onClick={handleAddCard} className="button">
               Add
             </a>
             <i

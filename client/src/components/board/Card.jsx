@@ -1,6 +1,6 @@
 import React from "react";
 
-const Card = ({ description }) => {
+const Card = ({ title }) => {
   return (
     <div className="card-background">
       <div className="card ">
@@ -12,7 +12,7 @@ const Card = ({ description }) => {
           <div className="card-label orange colorblindable"></div>
           <div className="card-label blue colorblindable"></div>
           <div className="card-label purple colorblindable"></div>
-          <p>{description}</p>
+          <p>{title}</p>
         </div>
         <div className="card-icons">
           <i className="clock-icon sm-icon overdue-recent completed">Aug 4</i>
