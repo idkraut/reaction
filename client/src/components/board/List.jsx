@@ -5,7 +5,12 @@ import Card from "./Card";
 
 import { editList } from "../../actions/ListActions";
 
-const List = ({ _id, title }) => {
+const List = ({
+  _id,
+  title,
+  isAddCardFormActive,
+  onChangeActiveAddCardForm,
+}) => {
   const dispatch = useDispatch();
 
   const [isEditTitle, setIsEditTitle] = useState(false);
@@ -29,7 +34,13 @@ const List = ({ _id, title }) => {
   );
 
   return (
-    <div className="list-wrapper">
+    <div
+      className={
+        isAddCardFormActive
+          ? "list-wrapper add-dropdown-active"
+          : "list-wrapper"
+      }
+    >
       <div className="list-background">
         <div className="list">
           <a className="more-icon sm-icon" href=""></a>
@@ -66,19 +77,34 @@ const List = ({ _id, title }) => {
               <Card key={card._id} {...card}></Card>
             ))}
           </div>
-          <div className="add-dropdown add-bottom">
+          <div
+            className={
+              isAddCardFormActive
+                ? "add-dropdown add-bottom active-card"
+                : "add-dropdown add-bottom"
+            }
+          >
             <div className="card">
               <div className="card-info"></div>
               <textarea name="add-card"></textarea>
               <div className="members"></div>
             </div>
-            <a className="button">Add</a>
-            <i className="x-icon icon"></i>
+            <a onClick={() => onChangeActiveAddCardForm("")} className="button">
+              Add
+            </a>
+            <i
+              onClick={() => onChangeActiveAddCardForm("")}
+              className="x-icon icon"
+            ></i>
             <div className="add-options">
               <span>...</span>
             </div>
           </div>
-          <div className="add-card-toggle" data-position="bottom">
+          <div
+            className="add-card-toggle"
+            onClick={() => onChangeActiveAddCardForm(_id)}
+            data-position="bottom"
+          >
             Add a card...
           </div>
         </div>

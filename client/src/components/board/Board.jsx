@@ -19,6 +19,11 @@ const Board = () => {
   const board = useSelector((store) => store.boards)[0];
   const lists = useSelector((store) => store.lists);
 
+  const [activeAddFormListId, setActiveAddFormListId] = useState("");
+  const handleChangeActiveAddCardForm = (listId) => {
+    setActiveAddFormListId(listId);
+  };
+
   if (!board) {
     return null;
   }
@@ -55,7 +60,12 @@ const Board = () => {
         <div id="list-container" className="list-container">
           <div id="existing-lists" className="existing-lists">
             {lists.map((list) => (
-              <List key={list._id} {...list}></List>
+              <List
+                key={list._id}
+                {...list}
+                onChangeActiveAddCardForm={handleChangeActiveAddCardForm}
+                isAddCardFormActive={activeAddFormListId === list._id}
+              ></List>
             ))}
           </div>
           <div
