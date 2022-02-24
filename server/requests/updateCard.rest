@@ -1,0 +1,12 @@
+PUT http://localhost:5000/api/cards/62168d0f8388a04fdbf75ba0
+content-type: application/json
+
+{
+  "card": {
+    "title": "My updated title2",
+    "completed": false,
+    "archived": true,
+    "labels": ["bananas", "grimble", "purple"],
+    "position": 23478
+  }
+}

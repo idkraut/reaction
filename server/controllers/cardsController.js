@@ -56,9 +56,25 @@ const sendCard = (req, res) => {
 
 const createComment = (req, res) => {
   const cardId = req.body.cardId;
-  Card.findByIdAndUpdate(cardId, {
-    $push: { comments: req.body.comment },
-  }).then((card) => res.json(card.comments[card.comments.length - 1]));
+  Card.findByIdAndUpdate(
+    cardId,
+    {
+      $push: { comments: req.body.comment },
+    },
+    { new: true }
+  ).then((card) => res.json(card.comments[card.comments.length - 1]));
+};
+
+const updateCard = (req, res, next) => {
+  const errors = validationResult(req);
+  if (errors.isEmpty()) {
+    const cardId = req.params.id;
+    Card.findByIdAndUpdate(cardId, req.body.card, { new: true }).then((card) =>
+      res.json(card)
+    );
+  } else {
+    return next(new HttpError("The card edits invalid.", 404));
+  }
 };
 
 module.exports = {
@@ -69,4 +85,5 @@ module.exports = {
   addCardToList,
   sendCard,
   createComment,
+  updateCard,
 };

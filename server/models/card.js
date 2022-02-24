@@ -18,6 +18,21 @@ const CardSchema = new Schema(
     description: {
       type: String,
     },
+    dueDate: {
+      type: String,
+    },
+    labels: {
+      type: [String],
+    },
+    position: {
+      type: Number,
+    },
+    archived: {
+      type: Boolean,
+    },
+    completed: {
+      type: Boolean,
+    },
     comments: { type: [CommentSchema] },
   },
   { timestamps: true }
