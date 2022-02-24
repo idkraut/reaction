@@ -15,8 +15,14 @@ const verifyListExists = async (req, res, next) => {
   if (!list) {
     res.status(404).send("List could not be found");
   } else {
+    req.list = list;
     next();
   }
+};
+
+const addBoardId = (req, res, next) => {
+  req.body.card.boardId = req.list.boardId;
+  next();
 };
 
 const createCard = (req, res, next) => {
@@ -51,6 +57,7 @@ const sendCard = (req, res, next) => {
 module.exports = {
   getCard,
   verifyListExists,
+  addBoardId,
   createCard,
   addCardToList,
   sendCard,

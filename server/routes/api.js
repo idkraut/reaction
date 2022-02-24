@@ -29,6 +29,7 @@ router.post(
   "/cards",
   cardsController.verifyListExists,
   validateCard,
+  cardsController.addBoardId,
   cardsController.createCard,
   cardsController.addCardToList,
   cardsController.sendCard

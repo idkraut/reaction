@@ -1,5 +1,5 @@
 import { React, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 
 import { fetchBoard } from "../../actions/BoardActions";
 import { createList } from "../../actions/ListActions";
@@ -10,11 +10,24 @@ import { useDispatch, useSelector } from "react-redux";
 
 const Board = () => {
   const dispatch = useDispatch();
-  const { id: boardId } = useParams("id");
+  const { id: paramId } = useParams("id");
   const [isNewListClicked, setisNewListClicked] = useState(false);
   const [listTitle, setListTitle] = useState("");
+  const cards = useSelector((state) => state.cards);
 
-  useEffect(() => dispatch(fetchBoard(boardId)), [dispatch, boardId]);
+  const location = useLocation();
+  const getBoardId = () => {
+    if (location.pathname.includes("boards")) {
+      return paramId;
+    } else {
+      return cards.find((card) => card._id === paramId)?.boardId;
+    }
+  };
+
+  const boardId = getBoardId(cards);
+  useEffect(() => {
+    if (boardId) dispatch(fetchBoard(boardId));
+  }, [dispatch, boardId]);
 
   const board = useSelector((store) => store.boards)[0];
   const lists = useSelector((store) => store.lists);

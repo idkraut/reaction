@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
+import { Link } from "react-router-dom";
 import Card from "./Card";
 
 import { editList } from "../../actions/ListActions";
@@ -85,7 +86,9 @@ const List = ({
           </div>
           <div id="cards-container" data-id="list-1-cards">
             {cards.map((card) => (
-              <Card key={card._id} {...card}></Card>
+              <Link key={card._id} to={`/cards/${card._id}`}>
+                <Card {...card}></Card>
+              </Link>
             ))}
           </div>
           <div
