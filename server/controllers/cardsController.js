@@ -50,8 +50,15 @@ const addCardToList = (req, res, next) => {
   );
 };
 
-const sendCard = (req, res, next) => {
+const sendCard = (req, res) => {
   res.json(req.card);
+};
+
+const createComment = (req, res) => {
+  const cardId = req.body.cardId;
+  Card.findByIdAndUpdate(cardId, {
+    $push: { comments: req.body.comment },
+  }).then((card) => res.json(card.comments[card.comments.length - 1]));
 };
 
 module.exports = {
@@ -61,4 +68,5 @@ module.exports = {
   createCard,
   addCardToList,
   sendCard,
+  createComment,
 };

@@ -35,4 +35,6 @@ router.post(
   cardsController.sendCard
 );
 
+router.post("/comments", cardsController.createComment);
+
 module.exports = router;

@@ -1,6 +1,13 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+const CommentSchema = new Schema(
+  {
+    text: { type: String },
+  },
+  { timestamps: true }
+);
+
 const CardSchema = new Schema(
   {
     boardId: { type: Schema.Types.ObjectId, ref: "Board" },
@@ -11,6 +18,7 @@ const CardSchema = new Schema(
     description: {
       type: String,
     },
+    comments: { type: [CommentSchema] },
   },
   { timestamps: true }
 );
