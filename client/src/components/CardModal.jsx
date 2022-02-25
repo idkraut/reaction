@@ -10,6 +10,8 @@ import { Link } from "react-router-dom";
 const CardModal = () => {
   const { id: cardId } = useParams("id");
   const dispatch = useDispatch();
+  const [isEditDescription, setIsEditDescription] = useState(false);
+  const [cardDescription, setCardDescription] = useState(null);
 
   const card = useSelector((state) => state.cards).find(
     (card) => card._id === cardId
@@ -33,6 +35,14 @@ const CardModal = () => {
 
   const handleEditCardTitle = () => {
     dispatch(updateCard(cardId, { title: cardTitle }));
+  };
+
+  const handleEditCardDescription = () => {
+    dispatch(
+      updateCard(cardId, { description: cardDescription }, () =>
+        setIsEditDescription(false)
+      )
+    );
   };
 
   if (!card) return null;
@@ -103,17 +113,46 @@ const CardModal = () => {
               </ul>
               <form className="description">
                 <p>Description</p>
-                <span id="description-edit" className="link">
-                  Edit
-                </span>
-                <p className="textarea-overlay">
-                  Cards have a symbol to indicate if they contain a description.
-                </p>
-                <p id="description-edit-options" className="hidden">
-                  You have unsaved edits on this field.{" "}
-                  <span className="link">View edits</span> -{" "}
-                  <span className="link">Discard</span>
-                </p>
+                {isEditDescription ? (
+                  <>
+                    <textarea
+                      onChange={(e) => setCardDescription(e.target.value)}
+                      value={cardDescription}
+                      defaultValue={card.description}
+                      className="textarea-toggle"
+                      rows="1"
+                    />
+                    <div>
+                      <div
+                        onClick={handleEditCardDescription}
+                        className="button"
+                        value="Save"
+                      >
+                        Save
+                      </div>
+                      <i
+                        onClick={() => setIsEditDescription(false)}
+                        className="x-icon icon"
+                      ></i>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <span
+                      onClick={() => setIsEditDescription(true)}
+                      id="description-edit"
+                      className="link"
+                    >
+                      Edit
+                    </span>
+                    <p className="textarea-overlay">{card.description}</p>
+                    <p id="description-edit-options" className="hidden">
+                      You have unsaved edits on this field.
+                      <span className="link">View edits</span> -
+                      <span className="link">Discard</span>
+                    </p>
+                  </>
+                )}
               </form>
             </li>
             <li className="comment-section">
