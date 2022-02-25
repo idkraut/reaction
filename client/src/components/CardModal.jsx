@@ -1,9 +1,9 @@
 import React from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
-import { fetchCard } from "../actions/CardsActions";
+import { fetchCard, updateCard } from "../actions/CardsActions";
 
 import { Link } from "react-router-dom";
 
@@ -15,9 +15,25 @@ const CardModal = () => {
     (card) => card._id === cardId
   );
 
+  // const [cardInTheState, setCardInTheState] = useState(false);
+
   useEffect(() => {
     dispatch(fetchCard(cardId));
+    // dispatch(fetchCard(cardId), () => setCardInTheState(true));
   }, [dispatch, cardId]);
+
+  const [cardTitle, setCardTitle] = useState(null);
+
+  // const [cardTitle, setCardTitle] = useState("");
+  // useEffect(() => {
+  //   if (cardInTheState) {
+  //     setCardTitle(card.title);
+  //   }
+  // }, [cardInTheState]);
+
+  const handleEditCardTitle = () => {
+    dispatch(updateCard(cardId, { title: cardTitle }));
+  };
 
   if (!card) return null;
   return (
@@ -29,9 +45,16 @@ const CardModal = () => {
         </Link>
         <header>
           <i className="card-icon icon .close-modal"></i>
-          <textarea className="list-title" style={{ height: "45px" }}>
-            {card.title}
-          </textarea>
+          <textarea
+            className="list-title"
+            style={{ height: "45px" }}
+            onChange={(e) => setCardTitle(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
+            onKeyUp={(e) => (e.key === "Enter" ? handleEditCardTitle() : null)}
+            onBlur={handleEditCardTitle}
+            value={cardTitle}
+            defaultValue={card.title}
+          />
           <p>
             in list <a className="link">Stuff to try (this is a list)</a>
             <i className="sub-icon sm-icon"></i>
@@ -105,7 +128,7 @@ const CardModal = () => {
                       required=""
                       rows="1"
                       placeholder="Write a comment..."
-                    ></textarea>
+                    />
                     <div>
                       <a className="light-button card-icon sm-icon"></a>
                       <a className="light-button smiley-icon sm-icon"></a>
@@ -143,9 +166,11 @@ const CardModal = () => {
                   </small>
                   <div className="comment">
                     <label>
-                      <textarea required="" rows="1">
-                        The activities have not been implemented yet.
-                      </textarea>
+                      <textarea
+                        required=""
+                        rows="1"
+                        value="The activities have not been implemented yet."
+                      />
                       <div>
                         <a className="light-button card-icon sm-icon"></a>
                         <a className="light-button smiley-icon sm-icon"></a>
@@ -187,9 +212,11 @@ const CardModal = () => {
                   </small>
                   <div className="comment">
                     <label>
-                      <textarea required="" rows="1">
-                        Example of a comment.
-                      </textarea>
+                      <textarea
+                        required=""
+                        rows="1"
+                        value="Example of a comment."
+                      />
                       <div>
                         <a className="light-button card-icon sm-icon"></a>
                         <a className="light-button smiley-icon sm-icon"></a>

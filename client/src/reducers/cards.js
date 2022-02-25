@@ -14,6 +14,11 @@ export default function cards(state = [], action) {
         ? state
         : state.concat(action.card);
     }
+    case "UPDATE_CARD_SUCCESS": {
+      return state.map((card) =>
+        card._id === action.card._id ? action.card : card
+      );
+    }
     default:
       return state;
   }
