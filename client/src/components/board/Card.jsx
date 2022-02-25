@@ -1,8 +1,13 @@
 import React from "react";
 
-const Card = ({ title }) => {
+const Card = ({ title, provided }) => {
   return (
-    <div className="card-background">
+    <div
+      className="card-background"
+      ref={provided.innerRef}
+      {...provided.draggableProps}
+      {...provided.dragHandleProps}
+    >
       <div className="card ">
         <i className="edit-toggle edit-icon sm-icon"></i>
         <div className="card-info">

@@ -1,11 +1,38 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { Link } from "react-router-dom";
 import Card from "./Card";
 
 import { editList } from "../../actions/ListActions";
-import { createCard } from "../../actions/CardsActions";
+import { createCard, updateCard } from "../../actions/CardsActions";
+
+function positionCalculator(items, targetPosition, originalPosition = 0) {
+  const itemsClone = items.slice().sort((a, b) => a.position - b.position);
+
+  const isOnly = itemsClone.length === 0;
+  const isFirst = targetPosition === 0;
+  const isLast = targetPosition >= itemsClone.length - 1;
+
+  if (isOnly || itemsClone.length === 0) {
+    return 65535;
+  } else if (isFirst) {
+    return itemsClone[0].position / 2;
+  } else if (isLast) {
+    return itemsClone[itemsClone.length - 1].position + 65536;
+  } else {
+    let itemBefore, itemAfter;
+    if (originalPosition > targetPosition) {
+      itemBefore = itemsClone[targetPosition - 1];
+      itemAfter = itemsClone[targetPosition];
+    } else {
+      itemBefore = itemsClone[targetPosition];
+      itemAfter = itemsClone[targetPosition + 1];
+    }
+    return (itemBefore.position + itemAfter.position) / 2;
+  }
+}
 
 const List = ({
   _id,
@@ -32,18 +59,36 @@ const List = ({
     );
   };
 
-  const handleAddCard = () => {
-    dispatch(
-      createCard({ title: cardTitle, listId: _id }, () => {
-        setCardTitle("");
-        onChangeActiveAddCardForm("");
-      })
-    );
-  };
-
   const cards = useSelector((state) => state.cards).filter(
     (card) => card.listId === _id
   );
+
+  const handleAddCard = () => {
+    dispatch(
+      createCard(
+        {
+          title: cardTitle,
+          listId: _id,
+          position: positionCalculator(cards, cards.length - 1),
+        },
+        () => {
+          setCardTitle("");
+          onChangeActiveAddCardForm("");
+        }
+      )
+    );
+  };
+
+  const handleDragCard = (result) => {
+    if (!result.destination) return null;
+    const cardId = result.draggableId;
+    const newPosition = positionCalculator(
+      cards,
+      result.destination.index,
+      result.source.index
+    );
+    dispatch(updateCard(cardId, { position: newPosition }));
+  };
 
   return (
     <div
@@ -84,13 +129,36 @@ const List = ({
               <span>...</span>
             </div>
           </div>
-          <div id="cards-container" data-id="list-1-cards">
-            {cards.map((card) => (
-              <Link key={card._id} to={`/cards/${card._id}`}>
-                <Card {...card}></Card>
-              </Link>
-            ))}
-          </div>
+          <DragDropContext onDragEnd={handleDragCard}>
+            <Droppable droppableId={_id}>
+              {(provided) => (
+                <div
+                  id="cards-container"
+                  data-id="list-1-cards"
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                >
+                  {cards
+                    .slice()
+                    .sort((a, b) => a.position - b.position)
+                    .map((card, index) => (
+                      <Draggable
+                        key={card._id}
+                        draggableId={card._id}
+                        index={index}
+                      >
+                        {(provided) => (
+                          <Link to={`/cards/${card._id}`}>
+                            <Card {...card} provided={provided}></Card>
+                          </Link>
+                        )}
+                      </Draggable>
+                    ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
           <div
             className={
               isAddCardFormActive
